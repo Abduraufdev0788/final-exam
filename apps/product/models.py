@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from apps.category.models import Category
 
 
 class Product(models.Model):
@@ -30,7 +31,7 @@ class Product(models.Model):
     )
 
     category = models.ForeignKey(
-        "Category",
+        Category,
         on_delete=models.CASCADE,
         related_name="products"
     )
