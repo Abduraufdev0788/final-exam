@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'apps.users.apps.UsersConfig',
     'apps.sellers.apps.SellersConfig',
 
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+
    
 ]
 
@@ -137,6 +140,7 @@ AUTH_USER_MODEL = "users.User"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        'apps.authentication.services.URLSafeJWTAuthentication',
     ),
 }
 
@@ -144,3 +148,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}

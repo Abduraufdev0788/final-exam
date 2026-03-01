@@ -1,5 +1,6 @@
 import requests
 from django.core.files.base import ContentFile
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from core.settings import TELEGRAM_BOT_TOKEN
 
@@ -45,3 +46,19 @@ def download_telegram_photo(file_id: str) -> ContentFile:
         file_response.content,
         name=f"{file_id}.jpg"
     )
+
+
+
+
+class URLSafeJWTAuthentication(JWTAuthentication):
+    def authenticate(self, request):
+        header = self.get_header(request)
+        if header is not None:
+            return super().authenticate(request)
+
+        raw_token = request.query_params.get('token')
+        if raw_token is None:
+            return None
+
+        validated_token = self.get_validated_token(raw_token)
+        return self.get_user(validated_token), validated_token
