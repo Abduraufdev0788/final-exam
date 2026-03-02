@@ -8,7 +8,7 @@ from .services import download_telegram_photo
 from .serializers import RegisterSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 import random
 import json
 from .redis_client import redis_client
@@ -123,4 +123,14 @@ class CheckUserView(APIView):
             })
         
 class UserLogOut(APIView):
-    pass
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request: Request)->Response:
+        try:
+            refresh_token = request.data.get("refresh")
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response({"status": "success log out"}, status=status.HTTP_200_OK)
+        except Exception:
+            return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
