@@ -5,13 +5,12 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from django.db import transaction
 from .services import download_telegram_photo
-from .serializers import RegisterSerializer, UserSerializer
+from .serializers import RegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 import random
-import json
-from .redis_client import redis_client
+from apps.users.serializers import UserSerializer
 
 
 class RegisterApiView(APIView):
@@ -40,10 +39,10 @@ class RegisterApiView(APIView):
             120,
             telegram_id
         )
-
         serializer = UserSerializer(user)
 
-        return Response({"code": code, "user": serializer.data, "status": "success"}, status=status.HTTP_200_OK)    
+        return Response({"code": code, "user": serializer.data, "status": "success"}, status=status.HTTP_200_OK)  
+      
     def post(self, request: Request):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -93,7 +92,6 @@ class CheckUserView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # 2️⃣ Redisdan telegram_id olish
             telegram_id = redis_client.get(f"login_code:{code}")
 
             if not telegram_id:
@@ -102,7 +100,6 @@ class CheckUserView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # 3️⃣ Userni topish
             user = User.objects.filter(telegram_id=telegram_id).first()
             print(user)
 

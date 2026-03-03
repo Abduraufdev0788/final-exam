@@ -1,11 +1,6 @@
 from rest_framework import serializers
 from apps.users.models import User
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'telegram_id', 'first_name', 'last_name', 'phone_number', 'role', 'avatar']
-
 class RegisterSerializer(serializers.Serializer):
     telegram_id = serializers.IntegerField(required=True)
     username = serializers.CharField(required=False, allow_blank=True, max_length=150)
