@@ -6,7 +6,7 @@ class User(AbstractUser):
     class Roles(models.TextChoices):
         CUSTOMER = 'CUSTOMER', 'Customer'
         SELLER = 'SELLER', 'Seller'
-    telegram_id = models.BigIntegerField(unique=True, blank=True)
+    telegram_id = models.BigIntegerField(unique=True, blank=True, null=True)
     phone_number = models.CharField(max_length=14)
     role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.CUSTOMER)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
