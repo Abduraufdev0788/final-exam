@@ -12,7 +12,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 import random
 from apps.users.serializers import UserSerializer
 
-
 class RegisterApiView(APIView):
     permission_classes = [AllowAny]
     def get(self, request: Request):
@@ -72,7 +71,6 @@ class RegisterApiView(APIView):
             status=status.HTTP_200_OK
         )
     
-
 class CheckUserView(APIView):
         permission_classes = [AllowAny]
 
@@ -112,6 +110,7 @@ class CheckUserView(APIView):
                 "access": str(refresh.access_token),
             })
         
+
 class UserLogOut(APIView):
     permission_classes = [IsAuthenticated]
 

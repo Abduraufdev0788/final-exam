@@ -46,7 +46,7 @@ class OrderViews(APIView):
             seller=product.seller,
             final_price=product.price,
             notes=notes,
-            status="kutilyapti"
+            status="Kutilyapti"
         )
 
         serializer = OrderSerializer(order)
