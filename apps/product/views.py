@@ -42,7 +42,7 @@ class ProductView(ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
 
-        if user.role != "seller":
+        if user.role != "SELLER":
             raise PermissionDenied("Faqat sotuvchi mahsulot qo‘sha oladi.")
 
         serializer.save(

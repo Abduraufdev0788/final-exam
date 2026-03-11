@@ -67,15 +67,8 @@ class RegisterApiView(APIView):
                 avatar_file = download_telegram_photo(avatar)
                 user.avatar.save(f"{telegram_id}.jpg", avatar_file)
 
-            code = str(random.randint(100000, 999999))
-
-            redis_client.setex(
-                f"otp_{telegram_id}",
-                120,
-                code
-            )
+            
         return Response(
-            {"code": code},
             status=status.HTTP_200_OK
         )
     
